@@ -75,3 +75,43 @@ class Level3(Level):
             None, None,
             None, None
         ]))
+
+
+class Level35(Level):
+    def __init__(self):
+        super().__init__()
+
+        self.setSocket(0, 0, Socket([
+            None, None,
+            None, None,
+            EntranceConnection(), EntranceConnection(),
+            EntrancePagoda(), None
+            ]))
+
+        self.setSocket(0, 1, Socket([
+            EntranceConnection(), EntranceConnection(),
+            EntranceConnection(), EntranceConnection(),
+            None, None,
+            None, None
+            ]))
+
+        self.setSocket(1, 1, Socket([
+            None, None,
+            EntranceConnection(), EntranceConnection(),
+            EntranceCountBridges(1), EntranceYinYang(),
+            EntranceConnection(), EntranceConnection()
+            ]))
+
+        self.setSocket(2, 1, Socket([
+            EntranceConnection(), EntranceConnection(),
+            None, None,
+            None, EntranceCountBridges(2),
+            EntranceConnection(), EntranceConnection()
+            ]))
+
+        self.setSocket(2, 1, Socket([
+            None, None,
+            None, EntrancePagoda(),
+            EntranceConnection(), EntranceConnection(),
+            None, None
+            ]))
