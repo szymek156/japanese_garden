@@ -3,6 +3,7 @@ from level import Level3
 from math import floor
 from functools import reduce
 import time
+import gui
 
 def setState(level, state):
     for s in range(len(state)):
@@ -119,22 +120,22 @@ if __name__ == "__main__":
 
     # exit(1)
 
-    idx = 0
-    for a, b in zip(getNextState(l3), nextTilesState(l3)):
-        list_b = []
-        for socket_id in range(b.getSocketsCount()):
-            list_b.append((b.getSocketById(socket_id).tile_.id_ , b.getSocketById(socket_id).tile_.rotation_))
+    # idx = 0
+    # for a, b in zip(getNextState(l3), nextTilesState(l3)):
+    #     list_b = []
+    #     for socket_id in range(b.getSocketsCount()):
+    #         list_b.append((b.getSocketById(socket_id).tile_.id_ , b.getSocketById(socket_id).tile_.rotation_))
 
-        print(a)
-        print(list_b)
-        print("----- ", idx, " -----")
-        idx = idx + 1
+    #     print(a)
+    #     print(list_b)
+    #     print("----- ", idx, " -----")
+    #     idx = idx + 1
 
-        if a != list_b:
-            print("THEY DIFFER")
-            break
+    #     if a != list_b:
+    #         print("THEY DIFFER")
+    #         break
 
-    exit(1)
+    # exit(1)
 
     cnt = 0
     for state in  nextTilesState(l3):
@@ -145,7 +146,6 @@ if __name__ == "__main__":
             l3.getSocketById(1).tile_.id_ == 1 and \
             l3.getSocketById(1).tile_.rotation_ == 3:
             print("OK setup iteration ", cnt)
-
 
         print (cnt)
         for socket_id in range(l3.getSocketsCount()):
@@ -164,7 +164,9 @@ if __name__ == "__main__":
             print("Found solution! After ", cnt, " iterations")
             for socket_id in range(l3.getSocketsCount()):
                 print(l3.getSocketById(socket_id).tile_)
-            # exit(0)
+
+            gui.Gui().showLevel(l3)
+            exit(0)
 
     print("No solution found, after ", cnt, " iterations")
 
