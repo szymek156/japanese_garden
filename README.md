@@ -11,3 +11,5 @@
 - improve getNextState function
 - make searching parallel
 - make searching randomized, just for fun
+- use heuristics, dynamic programming
+- use constrain programming (mini zinc?)
