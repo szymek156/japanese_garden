@@ -1,5 +1,11 @@
 class Socket:
     def __init__(self, entrances):
+        """ Entrances starts from top left and continue clockwise:
+              0 1
+            7     2
+            6     3
+              4 5
+        """
         self.entrances_ = entrances
         self.tile_ = None
 

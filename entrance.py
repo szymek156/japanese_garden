@@ -3,7 +3,7 @@ class EntranceCountBridges:
         self.count_ = count
 
     def check(self, path):
-        return len(filter(lambda p: p(2) == 'b', path)) == self.count_
+        return len(list(filter(lambda p: p[2] == 'b', path))) == self.count_
 
 class EntranceColor:
     def __init__(self, color):
