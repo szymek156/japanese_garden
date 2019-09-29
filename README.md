@@ -6,7 +6,6 @@
 - transpile
 - refactor
 - add tests
-- add board in the gui (generate info about entrances)
 - add validation of colors
 - better algorithms
 - more levels

@@ -1,10 +1,13 @@
 from math import floor
 from functools import reduce
 from progressbar import progressbar
+from tile import TILES
+from level import SetLevelState
 
 class NaiveSolver:
-    def __init__(self, level):
+    def __init__(self, level, debug=False):
         self.level_ = level
+        self.debug_ = debug
 
     def _getNextState(self):
         """ So there are several sockets on each level, there can be 1, 3, even 7.
@@ -24,7 +27,7 @@ class NaiveSolver:
         print("sockets count ", sockets)
 
         # Get modulos
-        magic = [(i, 4) for i in range(len(TILES), 0 ,-1)]
+        magic = [(i, 4) for i in range(len(TILES), 0 , -1)]
 
         # Get only those which are gonna be used for given level
         magic = magic[0:sockets]
@@ -66,9 +69,11 @@ class NaiveSolver:
         socket = self.level_.getSocketById(socket_id)
 
         for entrance_id in range(8):
-            path = self.level_.constructPath(entrance_id, socket_id)
+            traversal = self.level_.constructPath(entrance_id, socket_id)
 
-            if (path is not None and not socket.getEntrance(entrance_id).check(path)):
+            if (traversal is not None and not socket.getEntrance(entrance_id).check(traversal)):
+                if (self.debug_):
+                     breakpoint()
                 return False
 
         return True
@@ -83,11 +88,18 @@ class NaiveSolver:
         return found
 
     def solve(self):
+        if self.debug_:
+            print("Solver in debug mode")
+            SetLevelState(self.level_, self.level_.getSolution())
+            found = self._validateLevel()
+            print("Found solution: ", found)
+            return
+
         cnt = 0
         for state in self._getNextState():
             cnt = cnt + 1
 
-            self._setLevelState(state)
+            SetLevelState(self.level_, state)
 
             found = self._validateLevel()
 

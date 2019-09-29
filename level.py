@@ -53,27 +53,64 @@ class Level:
         path = self._traverse(entrance_id, coords[0], coords[1])
         return path
 
+    # def _traverse(self, entrance_id, x, y):
+    #     socket = self.getSocket(x, y)
+    #     if (socket is None):
+    #         return []
+
+    #     connection = socket.getConnection(entrance_id)
+
+    #     path = []
+    #     if (connection[1] in [0, 1]): # Go north
+    #         path = self._traverse(5 - connection[1], x, y - 1)
+    #     elif (connection[1] in [2, 3]): # Go east
+    #         path = self._traverse(9 - connection[1], x + 1, y)
+    #     elif (connection[1] in [4, 5]): # Go south
+    #         path = self._traverse(5 - connection[1], x, y + 1)
+    #     elif (connection[1] in [6, 7]): # Go west
+    #         path = self._traverse(9 - connection[1], x - 1, y)
+    #     else:
+    #         # Special yin yang case, path ends in the middle of a tile
+    #         pass
+
+    #     return [connection] + path
+
     def _traverse(self, entrance_id, x, y):
         socket = self.getSocket(x, y)
         if (socket is None):
-            return []
+            return [None, []]
 
         connection = socket.getConnection(entrance_id)
 
+        stop = None
         path = []
+
         if (connection[1] in [0, 1]): # Go north
-            path = self._traverse(5 - connection[1], x, y - 1)
+            stop, path = self._traverse(5 - connection[1], x, y - 1)
         elif (connection[1] in [2, 3]): # Go east
-            path = self._traverse(9 - connection[1], x + 1, y)
+            stop, path = self._traverse(9 - connection[1], x + 1, y)
         elif (connection[1] in [4, 5]): # Go south
-            path = self._traverse(5 - connection[1], x, y + 1)
+            stop, path = self._traverse(5 - connection[1], x, y + 1)
         elif (connection[1] in [6, 7]): # Go west
-            path = self._traverse(9 - connection[1], x - 1, y)
+            stop, path = self._traverse(9 - connection[1], x - 1, y)
         else:
             # Special yin yang case, path ends in the middle of a tile
             pass
 
-        return [connection] + path
+        traversal = [None, []]
+        if (not path):
+            # This is last tile, get ending entrance
+            if (connection[1] is not None):
+                traversal[0] = socket.getEntrance(connection[1])
+            # if connection[1] is None, this is yin-yang tile
+        else:
+            # This is tile in the middle of traversal, bubble up ending entrance
+            traversal[0] = stop
+
+        # Erlange path by connection on current tile
+        traversal[1] = [connection] + path
+
+        return traversal
 
 class Level3(Level):
     def __init__(self):
@@ -96,6 +133,34 @@ class Level3(Level):
     def getSolution(self):
         return [(5, 2), (1, 3)]
 
+
+class Level13(Level):
+    def __init__(self):
+        super().__init__()
+
+        self.setSocket(1, 0, Socket([
+            None, EntranceColor(EntranceColor.YELLOW),
+            None, EntranceColor(EntranceColor.RED),
+            EntranceConnection(), EntranceConnection(),
+            EntranceColor(EntranceColor.RED), None
+        ]))
+
+        self.setSocket(0, 1, Socket([
+            EntranceColor(EntranceColor.PURPLE), None,
+            EntranceConnection(), EntranceConnection(),
+            EntranceColor(EntranceColor.BLUE), EntranceColor(EntranceColor.YELLOW),
+            None, EntranceColor(EntranceColor.BLUE)
+        ]))
+
+        self.setSocket(1, 1, Socket([
+            EntranceConnection(), EntranceConnection(),
+            EntranceColor(EntranceColor.PURPLE), None,
+            None, None,
+            EntranceConnection(), EntranceConnection()
+        ]))
+
+    def getSolution(self):
+        return [(0, 2), (3, 2), (6, 2)]
 
 class Level35(Level):
     def __init__(self):

@@ -1,4 +1,3 @@
-
 import level
 import gui
 from solver import NaiveSolver
@@ -26,12 +25,11 @@ from solver import NaiveSolver
 
 
 if __name__ == "__main__":
-    lvl = level.Level50()
+    lvl = level.Level35()
 
     level.SetLevelState(lvl, lvl.getSolution())
     gui.Gui(lvl).showLevel()
 
     # if (NaiveSolver(lvl).solve()):
-    #     pass
-    #     # gui.Gui().showLevel(level)
+        # gui.Gui(lvl).showLevel()
 
