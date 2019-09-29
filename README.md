@@ -1,8 +1,8 @@
 # japanese_garden
-Before
+## Before
 ![It's ugly, but works](https://github.com/szymek156/japanese_garden/blob/master/tiles/board.png)
 
-After some magic:
+## After some magic:
 ![It's ugly, but works](https://github.com/szymek156/japanese_garden/blob/master/tiles/board_and_solution.png)
 
 # TODO:
