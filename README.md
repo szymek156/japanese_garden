@@ -10,7 +10,6 @@
 - transpile
 - refactor
 - add tests
-- add validation of colors
 - better algorithms
 - more levels
 - improve getNextState function
