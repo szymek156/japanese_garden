@@ -1,5 +1,6 @@
 # japanese_garden
-![It's ugly, but works](https://github.com/szymek156/japanese_garden/blob/master/tiles/i_am_backend_guy.png)
+![It's ugly, but works](https://github.com/szymek156/japanese_garden/blob/master/tiles/board.png)
+![It's ugly, but works](https://github.com/szymek156/japanese_garden/blob/master/tiles/board_and_solution.png)
 
 # TODO:
 - pep, pylint
