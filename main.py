@@ -25,11 +25,11 @@ from solver import NaiveSolver
 
 
 if __name__ == "__main__":
-    lvl = level.Level3()
+    lvl = level.Level29()
 
-    level.SetLevelState(lvl, lvl.getSolution())
-    gui.Gui(lvl).showLevel()
+    # level.SetLevelState(lvl, lvl.getSolution())
+    # gui.Gui(lvl).showLevel()
 
-    # if (NaiveSolver(lvl).solve()):
-        # gui.Gui(lvl).showLevel()
+    if (NaiveSolver(lvl).solve()):
+        gui.Gui(lvl).showLevel()
 

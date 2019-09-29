@@ -53,28 +53,6 @@ class Level:
         path = self._traverse(entrance_id, coords[0], coords[1])
         return path
 
-    # def _traverse(self, entrance_id, x, y):
-    #     socket = self.getSocket(x, y)
-    #     if (socket is None):
-    #         return []
-
-    #     connection = socket.getConnection(entrance_id)
-
-    #     path = []
-    #     if (connection[1] in [0, 1]): # Go north
-    #         path = self._traverse(5 - connection[1], x, y - 1)
-    #     elif (connection[1] in [2, 3]): # Go east
-    #         path = self._traverse(9 - connection[1], x + 1, y)
-    #     elif (connection[1] in [4, 5]): # Go south
-    #         path = self._traverse(5 - connection[1], x, y + 1)
-    #     elif (connection[1] in [6, 7]): # Go west
-    #         path = self._traverse(9 - connection[1], x - 1, y)
-    #     else:
-    #         # Special yin yang case, path ends in the middle of a tile
-    #         pass
-
-    #     return [connection] + path
-
     def _traverse(self, entrance_id, x, y):
         socket = self.getSocket(x, y)
         if (socket is None):
@@ -161,6 +139,146 @@ class Level13(Level):
 
     def getSolution(self):
         return [(0, 2), (3, 2), (6, 2)]
+
+class Level22(Level):
+    def __init__(self):
+        super().__init__()
+
+        self.setSocket(1,0, Socket([
+            None, None,
+            None, EntranceColor(EntranceColor.PURPLE),
+            EntranceConnection(), EntranceConnection(),
+            EntranceColor(EntranceColor.RED), None
+        ]))
+
+        self.setSocket(0, 1, Socket([
+            EntranceColor(EntranceColor.YELLOW), None,
+            EntranceConnection(), EntranceConnection(),
+            None, EntranceColor(EntranceColor.RED),
+            None, None
+        ]))
+
+        self.setSocket(1, 1, Socket([
+            EntranceConnection(), EntranceConnection(),
+            EntranceConnection(), EntranceConnection(),
+            None, None,
+            EntranceConnection(), EntranceConnection()
+        ]))
+
+        self.setSocket(2, 1, Socket([
+            None, EntranceColor(EntranceColor.PURPLE),
+            None, None,
+            EntranceColor(EntranceColor.YELLOW), None,
+            EntranceConnection(), EntranceConnection()
+        ]))
+
+    def getSolution(self):
+        return [(0, 2), (3, 2), (6, 2), (1, 3)]
+
+class Level26(Level):
+    def __init__(self):
+        super().__init__()
+
+        self.setSocket(0, 0, Socket([
+            None, EntranceCountBridges(1),
+            EntranceConnection(), EntranceConnection(),
+            None, None,
+            None, None
+        ]))
+
+        self.setSocket(1, 0, Socket([
+            EntranceCountBridges(1), EntranceCountBridges(1),
+            None, None,
+            EntranceConnection(), EntranceConnection(),
+            EntranceConnection(), EntranceConnection()
+        ]))
+
+        self.setSocket(1, 1, Socket([
+            EntranceConnection(), EntranceConnection(),
+            EntranceConnection(), EntranceConnection(),
+            EntranceCountTiles(4), EntrancePagoda(),
+            None, None
+        ]))
+
+        self.setSocket(2, 1, Socket([
+            None, None,
+            None, None,
+            None, EntranceCountTiles(3),
+            EntranceConnection(), EntranceConnection()
+        ]))
+
+    def getSolution(self):
+        return [(4, 1), (2, 0), (6, 3), (1, 1)]
+
+class Level27(Level):
+    def __init__(self):
+        super().__init__()
+
+        self.setSocket(0,0, Socket([
+            EntranceCountBridges(1), None,
+            EntranceConnection(), EntranceConnection(),
+            EntranceCountBridges(1), EntranceColor(EntranceColor.RED),
+            None, None
+        ]))
+
+        self.setSocket(1, 0, Socket([
+            None, EntranceCountBridges(1),
+            EntranceConnection(), EntranceConnection(),
+            EntranceColor(EntranceColor.RED), EntranceCountBridges(1),
+            EntranceConnection(), EntranceConnection()
+        ]))
+
+        self.setSocket(2, 0, Socket([
+            None, None,
+            None, EntranceColor(EntranceColor.PURPLE),
+            EntranceConnection(), EntranceConnection(),
+            EntranceConnection(), EntranceConnection()
+        ]))
+
+        self.setSocket(2, 1, Socket([
+            EntranceConnection(), EntranceConnection(),
+            None, None,
+            None, EntranceCountBridges(1),
+            None, EntranceColor(EntranceColor.PURPLE)
+        ]))
+
+    def getSolution(self):
+        return [(6, 3), (0, 3), (5, 2), (2, 0)]
+
+class Level29(Level):
+    def __init__(self):
+        super().__init__()
+
+        self.setSocket(1, 0, Socket([
+            None, None,
+            EntranceConnection(), EntranceConnection(),
+            EntranceConnection(), EntranceConnection(),
+            EntrancePagoda(), EntranceCountTiles(7)
+        ]))
+
+        self.setSocket(2, 0, Socket([
+            EntranceColor(EntranceColor.RED), None,
+            None, EntranceColor(EntranceColor.RED),
+            None, None,
+            EntranceConnection(), EntranceConnection()
+        ]))
+
+        self.setSocket(0, 1, Socket([
+            None, EntranceCountBridges(1),
+            EntranceConnection(), EntranceConnection(),
+            None, None,
+            None, None
+        ]))
+
+        self.setSocket(1, 1, Socket([
+            EntranceConnection(), EntranceConnection(),
+            None, None,
+            None, None,
+            EntranceConnection(), EntranceConnection()
+        ]))
+
+    def getSolution(self):
+        return [(2, 3), (6, 3), (4, 1), (1, 2)]
 
 class Level35(Level):
     def __init__(self):
