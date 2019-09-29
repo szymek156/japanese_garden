@@ -6,7 +6,7 @@ TILE_GRAPHIC = []
 TILE_DIM = 715//4
 
 ENTRANCE_GRAPHIC = {}
-ENTRANCE_DIM = 190//4
+ENTRANCE_DIM = 190//6
 ENTRANCE_NAME = ["red", "blue", "yellow", "purple", "count-tiles", "pagoda", "yin-yang", "bridge"]
 
 class Gui:
@@ -87,12 +87,12 @@ class Gui:
 
     def putEntrance(self, x, y, entrance_id, entrance):
         e_img = None
-        fnt = ImageFont.truetype('/usr/share/fonts/truetype/ubuntu/UbuntuMono-B.ttf', 24)
+        fnt = ImageFont.truetype('/usr/share/fonts/truetype/ubuntu/UbuntuMono-B.ttf', 20)
 
         if type(entrance) is EntranceCountBridges:
             e_img = ENTRANCE_GRAPHIC["bridge"].copy()
             d = ImageDraw.Draw(e_img)
-            d.text((17, 12), "%d" % entrance.count_, font=fnt, fill=(255, 255, 255))
+            d.text((10, 3), "%d" % entrance.count_, font=fnt, fill=(255, 255, 255))
 
         elif isinstance(entrance, EntranceColor):
             if entrance.color_ == EntranceColor.YELLOW:
@@ -113,7 +113,7 @@ class Gui:
         elif type(entrance) is EntranceCountTiles:
             e_img = ENTRANCE_GRAPHIC["count-tiles"].copy()
             d = ImageDraw.Draw(e_img)
-            d.text((17, 12), "%d" % entrance.count_, font=fnt, fill=(255, 255, 255))
+            d.text((10, 3), "%d" % entrance.count_, font=fnt, fill=(255, 255, 255))
 
         elif type(entrance) is EntranceYinYang:
             e_img = ENTRANCE_GRAPHIC["yin-yang"].copy()
@@ -127,9 +127,11 @@ class Gui:
         offset_y = 0
 
         if entrance_id == 0:
-            offset_x = 70
+            offset_x = 80
+            offset_y = 18
         elif entrance_id == 1:
             offset_x = 170
+            offset_y = 18
         elif entrance_id == 2:
             offset_x = 230
             offset_y = 70
@@ -143,10 +145,10 @@ class Gui:
             offset_x = 70
             offset_y = 230
         elif entrance_id == 6:
-            offset_x = 0
+            offset_x = 18
             offset_y = 170
         elif entrance_id == 7:
-            offset_x = 0
+            offset_x = 18
             offset_y = 70
 
 

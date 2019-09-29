@@ -1,12 +1,64 @@
 from math import floor
 from functools import reduce
-from progressbar import progressbar
+from tqdm import tqdm
 from tile import TILES
-from level import SetLevelState
+from level import SetLevelState, Level50
+import os
+import multiprocessing as mp
+
+
+DISABLE_PROGRESS = True
+
+def worker(job_info, level, queue):
+    NaiveSolver(level, job_info=job_info, queue=queue).solve()
+
+class ParallelSolver:
+    def __init__(self, level, jobs=1, debug=False):
+        self.level_ = level
+        self.jobs_ = jobs
+        self.debug_ = debug
+
+    def solve_process(self):
+        manager = mp.Manager()
+        queue = mp.Queue()
+        # queue = manager.Queue()
+        procs = [mp.Process(target=worker, args=((self.jobs_, i), self.level_, queue)) for i in range(self.jobs_)]
+
+        i = 0
+        for p in procs:
+            p.start()
+            # os.system("taskset -p -c %d %d &>/dev/null" % ((i % os.cpu_count()), p.pid))
+            i = i + 1
+
+        print("Wait on a queue...")
+        result = queue.get()
+
+        for p in procs:
+            p.terminate()
+
+        print("Result from worker: ", result)
+
+        return result
+
+    def solve_pool(self):
+        with mp.Pool(processes=self.jobs_) as pool:
+            manager = mp.Manager()
+            queue = manager.Queue()
+
+            _ = [pool.apply_async(worker, ((self.jobs_, i), self.level_, queue)) for i in range(self.jobs_)]
+
+            print("Wait on a queue...")
+            result = queue.get()
+            print("Result from worker: ", result)
+
+            return result
+
 
 class NaiveSolver:
-    def __init__(self, level, debug=False):
+    def __init__(self, level, job_info=(1, 1), queue=None, debug=False):
         self.level_ = level
+        self.jobs_, self.job_id_ = job_info
+        self.queue_ = queue
         self.debug_ = debug
 
     def _getNextState(self):
@@ -24,7 +76,6 @@ class NaiveSolver:
             generate states having given natural number """
 
         sockets = self.level_.getSocketsCount()
-        print("sockets count ", sockets)
 
         # Get modulos
         magic = [(i, 4) for i in range(len(TILES), 0 , -1)]
@@ -37,10 +88,24 @@ class NaiveSolver:
 
         search_space = reduce(lambda x, y: x * y, magic)
 
-        print("search space ", search_space)
+        job_range = search_space // self.jobs_
+        range_start = job_range * self.job_id_
+
+        if (self.job_id_ + 1 == self.jobs_):
+            # Last worker gets states to the very end
+            range_stop = search_space
+        else:
+            range_stop = range_start + job_range
+
+        # print("worker #%s range: [%d:%d]" % (self.job_id_, range_start, range_stop))
+
         tile_offsets = [0] * sockets
 
-        for idx in progressbar(range(search_space)):
+        # disable = True
+        # if self.job_id_ == 0:
+        #     disable = False
+
+        for idx in tqdm(range(range_start, range_stop), position=self.job_id_, disable=DISABLE_PROGRESS):
             state = []
             free_tiles = [i for i in range(0, len(TILES))]
 
@@ -106,6 +171,8 @@ class NaiveSolver:
             if (found):
                 print("Found solution! After ", cnt, " iterations")
                 print("State: ", state)
+                if self.queue_:
+                    self.queue_.put(state)
                 return True
 
         print("No solution found, after ", cnt, " iterations")

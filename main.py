@@ -1,6 +1,7 @@
 import level
-import gui
-from solver import NaiveSolver
+import time
+# import gui
+from solver import NaiveSolver, ParallelSolver
 
 
 # def nextTilesState(level):
@@ -25,11 +26,31 @@ from solver import NaiveSolver
 
 
 if __name__ == "__main__":
-    lvl = level.Level29()
 
-    # level.SetLevelState(lvl, lvl.getSolution())
-    # gui.Gui(lvl).showLevel()
+    lvls = [level.Level3(), level.Level13(),
+            level.Level22(), level.Level26(),
+            level.Level27(), level.Level29(),
+            level.Level35(), level.Level50()]
 
-    if (NaiveSolver(lvl).solve()):
-        gui.Gui(lvl).showLevel()
+    jobs = 32
+    for lvl in  lvls:
+    #     # level.SetLevelState(lvl, lvl.getSolution())
+    #     # gui.Gui(lvl).showLevel()
+        print("######################################################################")
+        print("solve_process Level: ", lvl)
 
+        start_time = time.time()
+        state = ParallelSolver(lvl, jobs=jobs).solve_process()
+        print("--- %s seconds ---" % (time.time() - start_time))
+
+        print("solve_pool Level: ", lvl)
+        start_time = time.time()
+        state = ParallelSolver(lvl, jobs=jobs).solve_pool()
+        print("--- %s seconds ---" % (time.time() - start_time))
+
+        # if (state):
+        #     level.SetLevelState(lvl, state)
+        #     gui.Gui(lvl).showLevel()
+
+    # ParallelSolver(level.Level29(), jobs=jobs).solve_process()
+    # ParallelSolver(level.Level29(), jobs=jobs).solve_pool()
