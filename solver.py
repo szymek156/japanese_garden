@@ -1,4 +1,3 @@
-from tile import TILES
 from math import floor
 from functools import reduce
 from progressbar import progressbar
@@ -6,14 +5,6 @@ from progressbar import progressbar
 class NaiveSolver:
     def __init__(self, level):
         self.level_ = level
-
-    def _setLevelState(self, state):
-        for s in range(len(state)):
-            tile = TILES[state[s][0]]
-            tile.rotate(None)
-            tile.rotate(state[s][1])
-
-            self.level_.getSocketById(s).setTile(tile)
 
     def _getNextState(self):
         """ So there are several sockets on each level, there can be 1, 3, even 7.

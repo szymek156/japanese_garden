@@ -1,5 +1,14 @@
 from sock import Socket
 from entrance import *
+from tile import TILES
+
+def SetLevelState(level, state):
+    for s in range(len(state)):
+        tile = TILES[state[s][0]]
+        tile.rotate(None)
+        tile.rotate(state[s][1])
+
+        level.getSocketById(s).setTile(tile)
 
 class Level:
     def __init__(self):
@@ -29,7 +38,7 @@ class Level:
             return None
 
     def getSolution(self):
-        raise RuntimeError("getSolution is not overridden")
+        raise NotImplementedError("getSolution is not overridden")
 
     def constructPath(self, entrance_id, socket_id):
         socket = self.getSocketById(socket_id)
